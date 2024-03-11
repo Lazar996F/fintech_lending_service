@@ -16,7 +16,7 @@ import { Loan } from '../loans/loan.entity';
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '3600s' },
     }),
     TypeOrmModule.forFeature([User, FinancialDetails, Loan]),
   ],

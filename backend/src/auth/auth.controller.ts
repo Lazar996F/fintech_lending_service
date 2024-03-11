@@ -10,15 +10,10 @@ export class AuthController {
     @Body('email') email: string,
     @Body('password') password: string,
   ) {
-    return this.authService.signUp(email, password);
-  }
-
-  @Post('login')
-  async login(
-    @Body('email') email: string,
-    @Body('password') password: string,
-  ) {
-    const { accessToken } = await this.authService.login(email, password);
-    return { accessToken };
+    try {
+      return this.authService.signUp(email, password);
+    } catch (e) {
+      return { message: 'Failed to sign up', error: e.message };
+    }
   }
 }

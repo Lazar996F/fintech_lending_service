@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('users')
 export class UserController {
@@ -10,11 +11,13 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @UseGuards(AuthGuard)
   @Get('user/:email')
   async getUserByEmail(@Param('email') email: string) {
     return this.userService.getUserByEmail(email);
   }
 
+  @UseGuards(AuthGuard)
   @Post('supply-liquidity')
   async supplyLiquidity(
     @Body('email') email: string,

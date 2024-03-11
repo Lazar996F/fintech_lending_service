@@ -23,6 +23,7 @@ function SupplyLiquidityForm() {
         }),
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
+          authorization: `Bearer ${session?.user.accessToken}`,
         },
       },
     );

@@ -17,32 +17,27 @@ export class AuthService {
   }
 
   async signUp(email: string, password: string): Promise<any> {
-    await this.userService.createUser(email, password);
-    const initialBalance = 1000; // Initial balance for new users
-    const newUser = await this.userService.getUserByEmail(email);
-    const accessToken = await this.generateAccessToken(newUser);
+    const existingUser = await this.userService.getUserByEmail(email);
+
+    if (!existingUser) {
+      await this.userService.createUser(email, password);
+      const newUser = await this.userService.getUserByEmail(email);
+      const accessToken = await this.generateAccessToken(newUser);
+      return {
+        ...newUser,
+        accessToken,
+      };
+    }
+
+    const passwordMatch = await compare(password, existingUser.password);
+    if (!passwordMatch) {
+      throw new Error('Invalid password');
+    }
+
+    const accessToken = await this.generateAccessToken(existingUser);
     return {
-      ...newUser,
+      ...existingUser,
       accessToken,
     };
-  }
-
-  async login(email: string, password: string) {
-    const user = await this.userService.findByEmail(email);
-
-    if (!user) {
-      throw new Error('User not found');
-    }
-
-    const passwordCorrect = await compare(password, user.password);
-
-    if (!passwordCorrect) {
-      throw new Error('Incorrect password');
-    }
-
-    const payload = { email: user.email, sub: user.id };
-    const accessToken = this.jwtService.sign(payload);
-
-    return { accessToken };
   }
 }

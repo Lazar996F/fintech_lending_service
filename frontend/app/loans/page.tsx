@@ -56,33 +56,35 @@ export default function LoansPage() {
           </tr>
         </thead>
         <tbody>
-          {loans.map((loanItem: any, i) => (
-            <tr key={i} className="">
-              <th
-                scope="row"
-                className="px-6 py-4 font-medium  whitespace-nowrap"
-              >
-                {loanItem.status}
-              </th>
-              <td className="px-6 py-4">${loanItem.amount}</td>
-              <td className="px-6 py-4">{loanItem.type}</td>
-              <td className="px-6 py-4">
-                {loanItem.type === 'borrow' && (
-                  <button
-                    onClick={handleRepayClick}
-                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                  >
-                    Repay
-                  </button>
-                )}
-                {loanItem.type === 'lend' && (
-                  <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                    Withdraw
-                  </button>
-                )}
-              </td>
-            </tr>
-          ))}
+          {loans &&
+            loans.length &&
+            loans.map((loanItem: any, i) => (
+              <tr key={i} className="">
+                <th
+                  scope="row"
+                  className="px-6 py-4 font-medium  whitespace-nowrap"
+                >
+                  {loanItem.status}
+                </th>
+                <td className="px-6 py-4">${loanItem.amount}</td>
+                <td className="px-6 py-4">{loanItem.type}</td>
+                <td className="px-6 py-4">
+                  {loanItem.type === 'borrow' && (
+                    <button
+                      onClick={handleRepayClick}
+                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                    >
+                      Repay
+                    </button>
+                  )}
+                  {loanItem.type === 'lend' && (
+                    <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                      Withdraw
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

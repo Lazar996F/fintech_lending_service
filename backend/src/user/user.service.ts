@@ -106,8 +106,7 @@ export class UserService {
     const outstandingDebt = userDetails.loans
       .filter(
         (loanInfo) =>
-          loanInfo.type === 'borrow' &&
-          (loanInfo.status === 'active' || loanInfo.status === 'pending'),
+          loanInfo.type === 'borrow' && loanInfo.status !== 'pending',
       )
       .reduce((total, loan) => total + loan.amount, 0);
 
