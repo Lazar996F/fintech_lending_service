@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Loan } from './loan.entity';
@@ -33,5 +33,29 @@ export class LoansService {
 
   async findAll(): Promise<Loan[]> {
     return this.loanRepository.find();
+  }
+
+  async findLoanById(id: number): Promise<Loan> {
+    const loan = await this.loanRepository.findOne({ where: { id } });
+    if (!loan) {
+      throw new NotFoundException(`Loan with ID ${id} not found`);
+    }
+    return loan;
+  }
+
+  async updateLoan(loan: Loan): Promise<Loan> {
+    return await this.loanRepository.save(loan);
+  }
+
+  async withdrawLoanHandler(email: string, loanAmount: number): Promise<any> {
+    await this.userService.withdrawCurrencyHandler(email, loanAmount);
+  }
+
+  async repayLoanHandler(
+    email: string,
+    repayAmount: number,
+    loanId: number,
+  ): Promise<any> {
+    await this.userService.repayLoan(email, repayAmount, loanId);
   }
 }
