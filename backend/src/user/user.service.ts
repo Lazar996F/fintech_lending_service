@@ -110,8 +110,20 @@ export class UserService {
       )
       .reduce((total, loan) => total + loan.amount, 0);
 
+    const totalEarnedFees = userDetails.loans
+      .filter((loan) => loan.type === 'lend' && loan.status === 'active')
+      .reduce(
+        (total, loan) => total + this.getCalculatedLendProfit(loan.amount),
+        0,
+      );
+
+    userDetails.financialDetails.totalEarnedFees = totalEarnedFees;
     userDetails.financialDetails.outstandingDebt = outstandingDebt;
 
     return userDetails;
+  }
+
+  getCalculatedLendProfit(loanAmount: number): number {
+    return loanAmount * 0.194;
   }
 }

@@ -1,7 +1,9 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { Loan } from './loan.entity';
 import { LoansService } from './loans.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('loans')
 @Controller('loans')
 export class LoansController {
   constructor(private readonly loanService: LoansService) {}
