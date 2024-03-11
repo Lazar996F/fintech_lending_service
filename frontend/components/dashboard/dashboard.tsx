@@ -54,7 +54,10 @@ const Dashboard: React.FC = () => {
               </div>
             </div>
           </div>
-          <Link href="/loans" className="hover:underline text-[2.7rem]">
+          <Link
+            href="/loans"
+            className="hover:underline text-[2.7rem] text-blue-800 font-semibold"
+          >
             Loans &#8594;
           </Link>
         </>

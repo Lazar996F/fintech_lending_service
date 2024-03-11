@@ -28,7 +28,7 @@ export default function LoansPage() {
     setLoading(true);
     if (session?.user.email) {
       getLoans({
-        accessToken: session.user.email,
+        accessToken: session.user.accessToken,
         userEmail: session.user.email,
       }).then((data) => {
         setLoans(data);
