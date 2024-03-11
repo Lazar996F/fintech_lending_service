@@ -92,30 +92,27 @@ export class UserService {
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
-    return this.userRepository
+    const userDetails = await this.userRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.financialDetails', 'financialDetails')
       .leftJoinAndSelect('user.loans', 'loans')
       .where('user.email = :email', { email })
       .getOne();
-  }
 
-  async calculateOutstandingDebt(userEmail: string): Promise<number> {
-    const user = await this.userRepository
-      .createQueryBuilder('user')
-      .leftJoinAndSelect('user.financialDetails', 'financialDetails')
-      .where('user.email = :email', { userEmail })
-      .getOne();
-
-    if (!user) {
-      throw new Error('User not found');
+    if (!userDetails) {
+      return undefined;
     }
 
-    // Sum the amounts of active and pending loans
-    const outstandingDebt = user.loans
-      .filter((loan) => loan.status === 'active' || loan.status === 'pending')
+    const outstandingDebt = userDetails.loans
+      .filter(
+        (loanInfo) =>
+          loanInfo.type === 'borrow' &&
+          (loanInfo.status === 'active' || loanInfo.status === 'pending'),
+      )
       .reduce((total, loan) => total + loan.amount, 0);
 
-    return outstandingDebt;
+    userDetails.financialDetails.outstandingDebt = outstandingDebt;
+
+    return userDetails;
   }
 }

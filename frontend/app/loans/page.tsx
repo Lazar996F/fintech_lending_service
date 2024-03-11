@@ -5,20 +5,25 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 export default function LoansPage() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [loans, setLoans] = useState([]);
 
   useEffect(() => {
-    getLoans().then((data) => setLoans(data));
-  }, []);
+    if (session?.user.email) {
+      getLoans().then((data) => setLoans(data.loans));
+    }
+  }, [status, session]);
 
   const getLoans = async () => {
-    const res = await fetch('http://localhost:5000/loans', {
-      method: 'GET',
-      headers: {
-        authorization: `Bearer ${session?.user.accessToken}`,
+    const res = await fetch(
+      `http://localhost:5000/users/user/${session?.user.email}`,
+      {
+        method: 'GET',
+        headers: {
+          authorization: `Bearer ${session?.user.accessToken}`,
+        },
       },
-    });
+    );
     return res.json();
   };
 
@@ -26,6 +31,7 @@ export default function LoansPage() {
     console.log('>>Repay Loan');
   };
 
+  if (status !== 'authenticated') return null;
   return (
     <div className="p-10">
       <div className="flex flex-row justify-between mb-8">
