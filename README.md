@@ -6,7 +6,7 @@ subject to a fixed annual fee.
 
 ## Description
 
-This app
+This application provides users with a comprehensive overview of their financial activities related to loans. Users can monitor their active loans, check their account balance, view current earned fees, and track outstanding debt.
 
 ## Backend
 
