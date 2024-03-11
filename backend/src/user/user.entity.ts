@@ -1,5 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import { Loan } from '../loans/loan.entity';
+import { FinancialDetails } from './financial-details.entity';
 
 @Entity()
 export class User {
@@ -14,4 +21,13 @@ export class User {
 
   @OneToMany(() => Loan, (loan) => loan.user)
   loans: Loan[];
+
+  @OneToOne(
+    () => FinancialDetails,
+    (financialDetails) => financialDetails.user,
+    {
+      cascade: true,
+    },
+  )
+  financialDetails: FinancialDetails;
 }

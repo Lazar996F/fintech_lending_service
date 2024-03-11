@@ -21,7 +21,7 @@ export class FinancialDetails {
   @Column({ default: 0 })
   outstandingDebt: number;
 
-  @OneToOne(() => User)
+  @OneToOne(() => User, (user) => user.financialDetails)
   @JoinColumn()
   user: User;
 }

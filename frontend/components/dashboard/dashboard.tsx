@@ -1,11 +1,29 @@
 'use client';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Dashboard: React.FC = () => {
-  const { data: session } = useSession();
-  console.log({ session });
+  const [userData, setUserData] = useState<any>({});
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      getUserDetails()
+        .then((res) => res.json())
+        .then((data) => setUserData(data));
+    }
+  }, [session, status]);
+
+  const getUserDetails = async () => {
+    return fetch(`http://localhost:5000/users/user/${session?.user.email}`, {
+      method: 'GET',
+      headers: {
+        authorization: `Bearer ${session?.user.accessToken}`,
+      },
+    });
+  };
+
   return (
     <>
       {session ? (
@@ -14,13 +32,12 @@ const Dashboard: React.FC = () => {
             Loans &#8594;
           </Link>
           <div className="">
-            <h3>Balance: {session?.user.financialDetails.balance}</h3>
+            <h3>Balance: {userData?.financialDetails?.balance}</h3>
             <h3>
-              Current earned fees:{' '}
-              {session?.user.financialDetails.totalEarnedFees}
+              Current earned fees: {userData?.financialDetails?.totalEarnedFees}
             </h3>
             <h3>
-              Outstanding debt: {session?.user.financialDetails.outstandingDebt}
+              Outstanding debt: {userData?.financialDetails?.outstandingDebt}
             </h3>
           </div>
         </div>

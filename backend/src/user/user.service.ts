@@ -57,7 +57,7 @@ export class UserService {
     return this.userRepository.findOne({ where: { email } });
   }
 
-  async reduceBalanceByEmail(email: string, amount: number): Promise<void> {
+  async reduceBalanceByEmail(email: string, amount: number): Promise<any> {
     const user = await this.userRepository.findOne({ where: { email } });
 
     if (!user) {
@@ -68,8 +68,14 @@ export class UserService {
 
     financialDetails.balance -= amount;
 
-    await this.userRepository.save(user);
-    await this.financialDetailsRepository.save(financialDetails);
+    const userData = await this.userRepository.save(user);
+    const finData =
+      await this.financialDetailsRepository.save(financialDetails);
+
+    return {
+      user: userData,
+      financialDetails: finData,
+    };
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {

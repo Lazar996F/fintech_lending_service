@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 
 @Controller('users')
@@ -10,14 +10,18 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @Get('user/:email')
+  async getUserByEmail(@Param('email') email: string) {
+    return this.userService.getUserByEmail(email);
+  }
+
   @Post('supply-liquidity')
   async supplyLiquidity(
     @Body('email') email: string,
     @Body('amount') amount: number,
   ) {
     try {
-      await this.userService.reduceBalanceByEmail(email, amount);
-      return { message: 'Balance updated successfully' };
+      return this.userService.reduceBalanceByEmail(email, amount);
     } catch (error) {
       return { message: 'Failed to update balance', error: error.message };
     }

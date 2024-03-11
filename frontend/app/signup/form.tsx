@@ -8,7 +8,7 @@ export default function Form() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const email = formData.get('email');
-const password = formData.get('password');
+    const password = formData.get('password');
     const response = await fetch(`http://localhost:5000/auth/signup`, {
       method: 'POST',
       body: JSON.stringify({
@@ -16,10 +16,9 @@ const password = formData.get('password');
         password,
       }),
       headers: {
-        "Content-type": "application/json; charset=UTF-8"
-      }
+        'Content-type': 'application/json; charset=UTF-8',
+      },
     });
-
 
     if (response.ok) {
       const data = await response.json();
@@ -28,7 +27,6 @@ const password = formData.get('password');
     } else {
       router.push('/');
     }
-
   };
 
   return (

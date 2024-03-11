@@ -17,7 +17,9 @@ export class AuthService {
   }
 
   async signUp(email: string, password: string): Promise<any> {
-    const newUser = await this.userService.createUser(email, password);
+    await this.userService.createUser(email, password);
+    const initialBalance = 1000; // Initial balance for new users
+    const newUser = await this.userService.getUserByEmail(email);
     const accessToken = await this.generateAccessToken(newUser);
     return {
       ...newUser,
