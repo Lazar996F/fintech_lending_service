@@ -10,7 +10,7 @@ const AppBar = () => {
 
   return (
     <div className="bg-gradient-to-b from-blue-50 to-blue-200 p-2 flex gap-5 p-6 items-center">
-      <div className="flex gap-2 flex-row justify-around w-full items-center">
+      <div className="flex gap-2 flex-row justify-between w-full items-center">
         <Link href="/">
           <Image
             src="/images/applogo.png"
