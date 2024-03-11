@@ -1,10 +1,38 @@
-//Apply for a loan by providing collateral, such as property, vehicles, or equity
+'use client';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 function ApplyForLoanForm() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('Apply for loan');
-    //
+
+    const formData = new FormData(event.currentTarget);
+
+    const email = session?.user.email;
+
+    const amount = formData.get('loanAmount');
+    const collateralType = formData.get('collateralType');
+
+    const response = await fetch(`http://localhost:5000/loans/apply`, {
+      method: 'POST',
+      body: JSON.stringify({
+        email,
+        amount,
+        collateral: collateralType,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    });
+
+    if (response.ok) {
+      router.push('/');
+    } else {
+      router.push('/');
+    }
   };
 
   return (
@@ -18,12 +46,11 @@ function ApplyForLoanForm() {
         name="loanAmount"
         className="p-4 mt-4 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-[10rem]"
       />
-      <select id="collateralType" name="collateralType">
+      <select id="collateralType" name="collateralType" className="mx-4">
         <option value="property">Property</option>
         <option value="vehicle">Vehicle</option>
         <option value="equity">Equity</option>
       </select>
-
       <button
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
         type="submit"

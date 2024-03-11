@@ -1,7 +1,6 @@
 'use client';
 import SupplyLiquidityForm from '@/components/forms/SupplyLiquidityForm';
 import ApplyForLoanForm from '@/components/forms/ApplyForLoan';
-import RepayLoanForm from '@/components/forms/RepayLoanForm';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
@@ -15,7 +14,7 @@ export default function LoansPage() {
 
   const getLoans = async () => {
     const res = await fetch('http://localhost:5000/loans', {
-      method: 'Get',
+      method: 'GET',
       headers: {
         authorization: `Bearer ${session?.user.accessToken}`,
       },
@@ -23,12 +22,15 @@ export default function LoansPage() {
     return res.json();
   };
 
+  const handleRepayClick = () => {
+    console.log('>>Repay Loan');
+  };
+
   return (
     <div className="p-10">
       <div className="flex flex-row justify-between mb-8">
         <SupplyLiquidityForm />
         <ApplyForLoanForm />
-        <RepayLoanForm />
       </div>
       <h3>Loans</h3>
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -43,9 +45,8 @@ export default function LoansPage() {
             <th scope="col" className="px-6 py-3">
               Amount
             </th>
-            <th scope="col" className="px-6 py-3">
-              Action
-            </th>
+            <th scope="col" className="px-6 py-3"></th>
+            <th scope="col" className="px-6 py-3"></th>
           </tr>
         </thead>
         <tbody>
@@ -62,6 +63,14 @@ export default function LoansPage() {
               <td className="px-6 py-4">
                 <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                   Withdraw
+                </button>
+              </td>
+              <td className="px-6 py-4">
+                <button
+                  onClick={handleRepayClick}
+                  className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                >
+                  Repay
                 </button>
               </td>
             </tr>
