@@ -4,6 +4,9 @@ import { Inter } from 'next/font/google';
 import Provider from './Provider';
 import AppBar from './AppBar';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -22,6 +25,7 @@ export default async function RootLayout({
         <Provider>
           <AppBar />
           {children}
+          <ToastContainer />
         </Provider>
       </body>
     </html>

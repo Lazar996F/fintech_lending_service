@@ -1,9 +1,9 @@
 'use client';
-import ApplyForLoanForm from '@/components/forms/ApplyForLoan';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import ConfirmationModal from '@/components/modals/Confirmation';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 export default function LoansPage() {
   const { data: session, status } = useSession();
@@ -77,6 +77,12 @@ export default function LoansPage() {
         },
       },
     );
+
+    if (response.ok) {
+      const data = await getLoans();
+      setLoans(data);
+      setIsOpenModalWithdraw(false);
+    }
   };
 
   const onChangeRepayAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -145,6 +151,12 @@ export default function LoansPage() {
       setLoans(updatedLoans);
       setIsOpenApplyModal(false);
     }
+  };
+
+  const notify = (message: string) => {
+    toast.success(`${message}`, {
+      position: 'top-center',
+    });
   };
 
   if (status !== 'authenticated') return null;
@@ -229,14 +241,24 @@ export default function LoansPage() {
         title="Withdraw Lent Loan"
         isOpen={isOpenModalWithdraw}
         onClose={() => setIsOpenModalWithdraw(false)}
-        submit={() => onSubmitLoanWithdrawn().then(() => router.push('/'))}
+        submit={() =>
+          onSubmitLoanWithdrawn().then(() =>
+            notify(
+              'Success! Withdrawal process initiated. Your funds will be available shortly.',
+            ),
+          )
+        }
         message="Are you sure you want to withdraw this loan? This action cannot be undone."
       />
       <ConfirmationModal
         title="Repaying Loan"
         isOpen={isOpenRepayModal}
         onClose={() => setIsOpenRepayModal(false)}
-        submit={() => onRepayLoanSubmit().then(() => router.push('/'))}
+        submit={() =>
+          onRepayLoanSubmit().then(() =>
+            notify('Congratulations! You have successfully repaid your loan'),
+          )
+        }
       >
         <input
           type="number"
@@ -251,7 +273,11 @@ export default function LoansPage() {
       <ConfirmationModal
         isOpen={isOpenSupplyForm}
         onClose={() => setIsOpenSupplyForm(false)}
-        submit={() => onSupplySubmit()}
+        submit={() =>
+          onSupplySubmit().then(() =>
+            notify('Supply successful! The firm now has additional liquidity'),
+          )
+        }
         title="Supply the firm with liquidity."
       >
         <input
@@ -268,7 +294,11 @@ export default function LoansPage() {
         isOpen={isOpenApplyModal}
         onClose={() => setIsOpenApplyModal(false)}
         submit={() =>
-          onApplyFormSubmit().then(() => setIsOpenApplyModal(false))
+          onApplyFormSubmit().then(() =>
+            notify(
+              'Your loan request is being processed. We will notify you once approved',
+            ),
+          )
         }
         title="Apply for a loan by providing collateral"
       >
