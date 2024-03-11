@@ -35,15 +35,23 @@ const Dashboard: React.FC = () => {
                 {getCurrencyFormat(userData?.financialDetails?.balance)}
               </span>
             </div>
-            <div>
-              <h3>
-                Current earned fees:{' '}
-                {getCurrencyFormat(userData?.financialDetails?.totalEarnedFees)}
-              </h3>
-              <h3>
-                Outstanding debt:{' '}
-                {getCurrencyFormat(userData?.financialDetails?.outstandingDebt)}
-              </h3>
+            <div className="flex flex-col text-right gap-8">
+              <div>
+                <span className="text-[1.4rem]">Current earned fees</span>
+                <h3 className="text-[2rem]">
+                  {getCurrencyFormat(
+                    userData?.financialDetails?.totalEarnedFees,
+                  )}
+                </h3>
+              </div>
+              <div>
+                <span className="text-[1.4rem]">Outstanding debt</span>
+                <h3 className="text-[2rem]">
+                  {getCurrencyFormat(
+                    userData?.financialDetails?.outstandingDebt,
+                  )}
+                </h3>
+              </div>
             </div>
           </div>
           <Link href="/loans" className="hover:underline text-[2.7rem]">
