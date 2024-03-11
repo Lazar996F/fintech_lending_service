@@ -7,7 +7,7 @@ function SupplyLiquidityForm() {
 
   return (
     <form onSubmit={handleSubmit} className='"max-w-sm mx-auto'>
-      <span>Supply the firm with liquidity.</span>
+      <span>Supply the firm with liquidity</span>
       <br />
       <input
         type="number"

@@ -18,6 +18,8 @@ const RepayLoanForm: React.FC = () => {
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
         required
+        placeholder="Repay amount"
+        className="p-4 mt-4 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-[10rem]"
       />
       <button
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"

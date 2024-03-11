@@ -11,7 +11,13 @@ function ApplyForLoanForm() {
     <form onSubmit={handleSubmit} className='"max-w-sm mx-auto'>
       <span>Apply for a loan by providing collateral</span>
       <br />
-      <input type="number" id="loanAmount" name="loanAmount" />
+      <input
+        type="number"
+        placeholder="Loand amount"
+        id="loanAmount"
+        name="loanAmount"
+        className="p-4 mt-4 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-[10rem]"
+      />
       <select id="collateralType" name="collateralType">
         <option value="property">Property</option>
         <option value="vehicle">Vehicle</option>
