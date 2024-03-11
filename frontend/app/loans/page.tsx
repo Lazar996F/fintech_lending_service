@@ -40,10 +40,10 @@ export default function LoansPage() {
               Status
             </th>
             <th scope="col" className="px-6 py-3">
-              Type
+              Amount
             </th>
             <th scope="col" className="px-6 py-3">
-              Amount
+              Type
             </th>
             <th scope="col" className="px-6 py-3"></th>
             <th scope="col" className="px-6 py-3"></th>
@@ -58,20 +58,22 @@ export default function LoansPage() {
               >
                 {loanItem.status}
               </th>
-              <td className="px-6 py-4">{loanItem.type}</td>
               <td className="px-6 py-4">${loanItem.amount}</td>
+              <td className="px-6 py-4">{loanItem.type}</td>
               <td className="px-6 py-4">
-                <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                  Withdraw
-                </button>
-              </td>
-              <td className="px-6 py-4">
-                <button
-                  onClick={handleRepayClick}
-                  className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                >
-                  Repay
-                </button>
+                {loanItem.type === 'borrow' && (
+                  <button
+                    onClick={handleRepayClick}
+                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                  >
+                    Repay
+                  </button>
+                )}
+                {loanItem.type === 'lend' && (
+                  <button className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                    Withdraw
+                  </button>
+                )}
               </td>
             </tr>
           ))}
