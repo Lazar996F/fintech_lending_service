@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
 import { FinancialDetails } from './financial-details.entity';
+import { LoansService } from '../loans/loans.service';
+import { Loan } from '../loans/loan.entity';
 
 @Injectable()
 export class UserService {
@@ -12,6 +14,8 @@ export class UserService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(FinancialDetails)
     private readonly financialDetailsRepository: Repository<FinancialDetails>,
+    @InjectRepository(Loan)
+    private readonly loanRepository: Repository<Loan>,
   ) {}
 
   async findOrCreateFinancialDetails(user: User): Promise<FinancialDetails> {
@@ -71,6 +75,14 @@ export class UserService {
     const userData = await this.userRepository.save(user);
     const finData =
       await this.financialDetailsRepository.save(financialDetails);
+
+    // Create a new loan record
+    const loan = this.loanRepository.create({
+      amount: amount,
+      type: 'lend',
+      status: 'active',
+    });
+    await this.loanRepository.save(loan);
 
     return {
       user: userData,

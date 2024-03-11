@@ -8,7 +8,7 @@ const Dashboard: React.FC = () => {
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    if (status === 'authenticated') {
+    if (session?.user.email) {
       getUserDetails()
         .then((res) => res.json())
         .then((data) => setUserData(data));

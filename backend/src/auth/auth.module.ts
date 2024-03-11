@@ -8,6 +8,7 @@ import { UserService } from '../user/user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../user/user.entity';
 import { FinancialDetails } from '../user/financial-details.entity';
+import { Loan } from '../loans/loan.entity';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { FinancialDetails } from '../user/financial-details.entity';
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '60s' },
     }),
-    TypeOrmModule.forFeature([User, FinancialDetails]),
+    TypeOrmModule.forFeature([User, FinancialDetails, Loan]),
   ],
   providers: [AuthService, UserService],
   controllers: [AuthController],

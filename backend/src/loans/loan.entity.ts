@@ -18,6 +18,6 @@ export class Loan {
   @ManyToOne(() => User, (user) => user.loans)
   user: User;
 
-  @Column()
-  collateral: string;
+  @Column({ nullable: true })
+  collateral?: string;
 }
