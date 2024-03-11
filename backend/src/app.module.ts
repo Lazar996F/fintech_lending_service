@@ -5,6 +5,11 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { User } from './user/user.entity'; // Import the User entity
+import { LoansModule } from './loans/loans.module';
+import { Loan } from './loans/loan.entity';
+import { FinancialDetails } from './user/financial-details.entity';
+import { LoansController } from './loans/loans.controller';
+import { LoansService } from './loans/loans.service';
 
 @Module({
   imports: [
@@ -16,13 +21,15 @@ import { User } from './user/user.entity'; // Import the User entity
       username: 'poll_user',
       password: 'poll_password',
       database: 'poll_db',
-      entities: [User], // Include the User entity here
+      entities: [User, Loan, FinancialDetails],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([User]), // Include the User entity here as well
+    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([Loan]),
     UserModule,
+    LoansModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, LoansController],
+  providers: [AppService, LoansService],
 })
 export class AppModule {}
